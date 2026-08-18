@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phon Shop — ร้านค้าสำหรับนักเรียนยุคใหม่</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0D17;
+    --bg-soft:#12152A;
+    --card:#161A33;
+    --card-hi:#1D2142;
+    --line:#2A2F52;
+    --text:#EDEFFA;
+    --muted:#9096B8;
+    --violet:#8B6BFF;
+    --blue:#4FA9FF;
+    --mint:#4CE0B3;
+    --pink:#FF6FA5;
+    --grad: linear-gradient(120deg,#4FA9FF 0%, #8B6BFF 55%, #FF6FA5 100%);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 500px at 85% -5%, rgba(139,107,255,.25), transparent 60%),
+      radial-gradient(700px 400px at -5% 15%, rgba(79,169,255,.18), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    line-height:1.65;
+  }
+  h1,h2,h3,.display{font-family:'Sora',sans-serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  ::selection{background:var(--violet);color:#fff;}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+
+  header.top{
+    position:sticky; top:0; z-index:20;
+    background:rgba(11,13,23,.75);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand-row{
+    max-width:1120px;margin:0 auto;padding:18px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Sora',sans-serif;font-weight:700;font-size:20px;}
+  .brand .mark{
+    width:32px;height:32px;border-radius:9px;background:var(--grad);
+    display:flex;align-items:center;justify-content:center;font-size:16px;color:#0B0D17;font-weight:800;
+  }
+  .tagline{font-size:12.5px;color:var(--muted);}
+
+  nav.tabs{display:flex;gap:6px;flex-wrap:wrap;}
+  nav.tabs button{
+    font-family:'Sora',sans-serif;font-weight:500;font-size:13.5px;
+    background:transparent;color:var(--muted);border:1px solid transparent;
+    border-radius:999px;padding:9px 16px;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
+    transition:all .15s;
+  }
+  nav.tabs button .num{font-family:'JetBrains Mono',monospace;font-size:10.5px;opacity:.7;}
+  nav.tabs button:hover{color:var(--text);background:var(--card);}
+  nav.tabs button.active{
+    color:#0B0D17;background:var(--grad);
+  }
+  nav.tabs button.active .num{opacity:.75;}
+
+  main{padding:56px 0 90px;}
+  section{display:none;}
+  section.active{display:block;animation:fadeUp .35s ease;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--mint);margin-bottom:12px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .eyebrow::before{content:"";width:16px;height:1px;background:var(--mint);}
+  h1.hero{font-size:44px;font-weight:800;margin:0 0 16px;line-height:1.2;letter-spacing:-.01em;}
+  h1.hero .gradient-text{
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h2.section-title{font-size:26px;font-weight:700;margin:0 0 6px;letter-spacing:-.01em;}
+  .sub{color:var(--muted);font-size:15px;margin:0 0 30px;max-width:60ch;}
+
+  .hero-wrap{
+    display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;
+    padding-bottom:44px;margin-bottom:44px;border-bottom:1px solid var(--line);
+  }
+  .hero-copy p{color:var(--muted);font-size:16px;max-width:48ch;}
+  .btn{
+    font-family:'Sora',sans-serif;font-weight:600;font-size:14.5px;
+    border:none;border-radius:10px;padding:13px 24px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;transition:transform .12s, opacity .12s;
+  }
+  .btn-primary{background:var(--grad);color:#0B0D17;}
+  .btn-primary:hover{transform:translateY(-1px);opacity:.92;}
+  .btn-outline{background:transparent;color:var(--text);border:1px solid var(--line);}
+  .btn-outline:hover{border-color:var(--violet);color:var(--violet);}
+
+  .stat-card{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;position:relative;overflow:hidden;
+  }
+  .stat-card::before{content:"";position:absolute;inset:0;background:var(--grad);opacity:.05;}
+  .stat-card h3{margin:0 0 4px;font-size:16px;position:relative;}
+  .stat-list{list-style:none;margin:16px 0 0;padding:0;font-size:14px;position:relative;}
+  .stat-list li{padding:11px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--muted);}
+  .stat-list li:first-child{border-top:none;}
+  .stat-list li span:last-child{color:var(--text);font-family:'JetBrains Mono',monospace;font-weight:500;}
+
+  .cat-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px;}
+  .cat-chip{
+    background:var(--card);border:1px solid var(--line);border-radius:999px;
+    padding:10px 18px;font-size:13.5px;color:var(--text);cursor:pointer;
+    display:flex;align-items:center;gap:9px;transition:all .15s;
+  }
+  .cat-chip:hover{border-color:var(--violet);background:var(--card-hi);}
+  .cat-chip .ic{
+    width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    background:var(--bg-soft);font-size:13px;
+  }
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:18px;}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;
+    display:flex;flex-direction:column;gap:11px;transition:border-color .15s, transform .15s;
+  }
+  .card:hover{border-color:var(--violet);transform:translateY(-2px);}
+  .card .thumb{
+    height:104px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:32px;
+  }
+  .card h4{margin:0;font-size:15px;font-weight:600;}
+  .card .cat-tag{
+    font-size:11px;color:var(--mint);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em;
+  }
+  .card .price{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:17px;}
+  .card .old-price{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);text-decoration:line-through;margin-left:7px;}
+  .card button{
+    margin-top:auto;font-family:'Sora',sans-serif;font-weight:600;
+    background:var(--bg-soft);color:var(--text);border:1px solid var(--line);
+    border-radius:9px;padding:10px;font-size:13px;cursor:pointer;transition:all .15s;
+  }
+  .card button:hover{background:var(--grad);color:#0B0D17;border-color:transparent;}
+
+  .form-card{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;padding:34px;max-width:540px;
+  }
+  .field{margin-bottom:18px;}
+  .field label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:7px;}
+  .field input{
+    width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;
+    font-family:'Inter',sans-serif;font-size:14.5px;background:var(--bg-soft);color:var(--text);
+  }
+  .field input::placeholder{color:#5A5F82;}
+  .field input:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px rgba(139,107,255,.18);}
+  .err{color:var(--pink);font-size:12.5px;margin-top:6px;display:none;}
+  .field.invalid .err{display:block;}
+  .field.invalid input{border-color:var(--pink);}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .success-box{
+    display:none;background:rgba(76,224,179,.1);border:1px solid rgba(76,224,179,.4);color:var(--mint);
+    padding:14px 16px;border-radius:12px;font-size:14px;margin-bottom:18px;
+  }
+
+  .receipt{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;max-width:460px;padding:28px 24px;
+  }
+  .receipt h3{margin:0 0 4px;font-size:17px;}
+  .receipt .rmeta{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:18px;}
+  .rline{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-top:1px solid var(--line);font-size:14px;gap:10px;}
+  .rline:first-of-type{border-top:none;}
+  .rline .rname{flex:1;}
+  .rline .rqty{color:var(--muted);font-size:12.5px;}
+  .rline .rprice{font-family:'JetBrains Mono',monospace;}
+  .rtotals{border-top:1px solid var(--violet);margin-top:8px;padding-top:12px;}
+  .rtotals .rline{border-top:none;padding:5px 0;}
+  .rtotals .grand{font-weight:700;font-size:19px;}
+  .rtotals .grand .rprice{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .empty-note{color:var(--muted);font-size:14px;padding:20px 0;}
+
+  .ship-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
+  .ship-options{display:flex;flex-direction:column;gap:12px;}
+  .ship-opt{
+    background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;display:flex;justify-content:space-between;align-items:center;
+    cursor:pointer;font-size:14.5px;transition:all .15s;
+  }
+  .ship-opt.selected{border-color:var(--violet);background:var(--card-hi);}
+  .ship-opt .oname{font-weight:600;}
+  .ship-opt .odesc{font-size:12.5px;color:var(--muted);}
+  .ship-opt .oprice{font-family:'JetBrains Mono',monospace;font-weight:600;}
+
+  .index-tab{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--card);border:1px solid var(--line);color:var(--muted);
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    padding:5px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .index-tab .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);}
+
+  footer{border-top:1px solid var(--line);color:var(--muted);text-align:center;font-size:12.5px;padding:26px;}
+
+  /* floating blobs */
+  .blob{
+    position:fixed;border-radius:50%;filter:blur(60px);opacity:.35;z-index:0;pointer-events:none;
+    animation:drift 14s ease-in-out infinite;
+  }
+  .blob-1{width:340px;height:340px;background:var(--violet);top:-80px;right:-60px;animation-delay:0s;}
+  .blob-2{width:260px;height:260px;background:var(--blue);bottom:10%;left:-80px;animation-delay:-4s;}
+  .blob-3{width:220px;height:220px;background:var(--pink);top:40%;right:20%;animation-delay:-8s;}
+  @keyframes drift{
+    0%,100%{transform:translate(0,0) scale(1);}
+    33%{transform:translate(30px,-24px) scale(1.08);}
+    66%{transform:translate(-24px,20px) scale(.94);}
+  }
+  header.top, main, footer{position:relative;z-index:1;}
+  @media (prefers-reduced-motion: reduce){ .blob{animation:none;} }
+
+  /* progress dots */
+  .progress-row{display:flex;gap:8px;justify-content:center;padding:12px 0 0;position:relative;z-index:1;}
+  .progress-row .pdot{
+    width:34px;height:4px;border-radius:999px;background:var(--line);transition:all .25s;
+  }
+  .progress-row .pdot.done{background:var(--mint);}
+  .progress-row .pdot.current{background:var(--grad);width:46px;}
+
+  /* toast */
+  #toastHost{
+    position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:50;
+    display:flex;flex-direction:column;gap:8px;align-items:center;
+  }
+  .toast{
+    background:var(--card);border:1px solid var(--violet);color:var(--text);
+    padding:12px 20px;border-radius:999px;font-size:13.5px;font-weight:500;
+    display:flex;align-items:center;gap:8px;
+    box-shadow:0 8px 30px rgba(0,0,0,.4);
+    animation:toastIn .25s ease, toastOut .3s ease 1.7s forwards;
+  }
+  .toast .dotpulse{width:7px;height:7px;border-radius:50%;background:var(--mint);}
+  @keyframes toastIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes toastOut{to{opacity:0;transform:translateY(-6px);}}
+
+  /* cart bounce */
+  @keyframes bounce{
+    0%,100%{transform:scale(1);}
+    30%{transform:scale(1.35);}
+    55%{transform:scale(.92);}
+  }
+  #tabCartCount.bump{animation:bounce .4s ease;display:inline-block;}
+
+  /* card tilt glow */
+  .card{position:relative;}
+  .card .glow{
+    position:absolute;inset:0;border-radius:16px;pointer-events:none;opacity:0;
+    background:radial-gradient(160px circle at var(--mx,50%) var(--my,50%), rgba(139,107,255,.25), transparent 70%);
+    transition:opacity .2s;
+  }
+  .card:hover .glow{opacity:1;}
+
+  #confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:60;}
+
+  .auth-switch{display:inline-flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:24px;}
+  .auth-tab{
+    font-family:'Sora',sans-serif;font-weight:600;font-size:13.5px;border:none;background:transparent;
+    color:var(--muted);border-radius:999px;padding:9px 20px;cursor:pointer;transition:all .15s;
+  }
+  .auth-tab.active{background:var(--grad);color:#0B0D17;}
+
+  #accountBox{display:flex;align-items:center;}
+  .account-chip{
+    display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);
+    border-radius:999px;padding:6px 14px 6px 6px;font-size:13px;
+  }
+  .account-chip .avatar{
+    width:26px;height:26px;border-radius:50%;background:var(--grad);color:#0B0D17;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;
+  }
+  .account-chip .logout{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;text-decoration:underline;padding:0;}
+  .account-chip .logout:hover{color:var(--pink);}
+  .btn-account-login{
+    font-family:'Sora',sans-serif;font-weight:600;font-size:13px;background:var(--card);
+    color:var(--text);border:1px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer;
+  }
+  .btn-account-login:hover{border-color:var(--violet);}
+
+  @media(max-width:760px){
+    .hero-wrap, .ship-grid{grid-template-columns:1fr;}
+    .two-col{grid-template-columns:1fr;}
+    h1.hero{font-size:32px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+<canvas id="confettiCanvas"></canvas>
+<div id="toastHost"></div>
+
+<header class="top">
+  <div class="brand-row">
+    <div>
+      <div class="brand"><span class="mark">P</span>Phon Shop</div>
+      <div class="tagline">ร้านของนักเรียนยุคใหม่ · เลือกง่าย จ่ายจริง จัดส่งไว</div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="active" data-target="home"><span class="num">01</span>หน้าหลัก</button>
+      <button data-target="signup"><span class="num">02</span>สมัครสมาชิก</button>
+      <button data-target="products"><span class="num">03</span>สินค้า</button>
+      <button data-target="summary"><span class="num">04</span>สรุปคำสั่งซื้อ <span id="tabCartCount"></span></button>
+      <button data-target="shipping"><span class="num">05</span>การจัดส่ง</button>
+    </nav>
+    <div id="accountBox"></div>
+  </div>
+  <div class="progress-row" id="progressRow"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1. HOME -->
+  <section id="home" class="active">
+    <div class="hero-wrap">
+      <div class="hero-copy">
+        <div class="eyebrow">เปิดเทอมนี้ · ครบทุกอย่างในที่เดียว</div>
+        <h1 class="hero">ของใช้นักเรียน<br><span class="gradient-text">อัปเดตทุกซีซัน</span></h1>
+        <p>เครื่องเขียน หนังสือเรียน กระเป๋า และอุปกรณ์การเรียน คัดโดยนักเรียนเพื่อนักเรียน ราคาเป็นมิตร จัดส่งถึงหน้าโรงเรียน</p>
+        <div style="display:flex;gap:12px;margin-top:22px;flex-wrap:wrap;">
+          <button class="btn btn-primary" data-goto="products">ดูสินค้าทั้งหมด →</button>
+          <button class="btn btn-outline" data-goto="signup">สมัครสมาชิก</button>
+        </div>
+      </div>
+      <div class="stat-card">
+        <h3>สรุปวันนี้</h3>
+        <ul class="stat-list">
+          <li><span>สินค้าในร้าน</span><span id="statCount">-</span></li>
+          <li><span>หมวดหมู่</span><span>4 หมวด</span></li>
+          <li><span>ค่าส่งเริ่มต้น</span><span>฿30</span></li>
+          <li><span>ส่งฟรีเมื่อซื้อครบ</span><span>฿500</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="section-title">เลือกตามหมวดหมู่</h2>
+    <p class="sub">แตะหมวดที่สนใจ ระบบจะพาไปหน้าสินค้าพร้อมกรองให้อัตโนมัติ</p>
+    <div class="cat-row" id="homeCatRow"></div>
+
+    <h2 class="section-title">สินค้าขายดี</h2>
+    <p class="sub">คัดมาให้แล้วจากสิ่งที่นักเรียนสั่งซื้อบ่อยที่สุด</p>
+    <div class="grid" id="featuredGrid"></div>
+  </section>
+
+  <!-- 2. SIGNUP -->
+  <section id="signup">
+    <div class="index-tab"><span class="dot"></span>ขั้นตอนที่ 02</div>
+    <h2 class="section-title">บัญชีผู้ใช้</h2>
+    <p class="sub">สมัครสมาชิกเพื่อรับส่วนลดและสั่งซื้อได้ หรือเข้าสู่ระบบถ้ามีบัญชีอยู่แล้ว</p>
+
+    <div class="auth-switch" id="authSwitch">
+      <button type="button" class="auth-tab active" data-mode="register">สมัครสมาชิก</button>
+      <button type="button" class="auth-tab" data-mode="login">เข้าสู่ระบบ</button>
+    </div>
+
+    <div class="success-box" id="signupSuccess">สมัครสมาชิกสำเร็จ ยินดีต้อนรับ! ตอนนี้คุณพร้อมเลือกซื้อสินค้าแล้ว</div>
+    <div class="success-box" id="loginSuccess">เข้าสู่ระบบสำเร็จ ยินดีต้อนรับกลับมา!</div>
+
+    <form class="form-card" id="signupForm" novalidate>
+      <div class="two-col">
+        <div class="field" id="f-fname">
+          <label for="fname">ชื่อจริง</label>
+          <input type="text" id="fname" placeholder="เช่น นภัสสร">
+          <div class="err">กรุณากรอกชื่อจริง</div>
+        </div>
+        <div class="field" id="f-lname">
+          <label for="lname">นามสกุล</label>
+          <input type="text" id="lname" placeholder="เช่น ใจดี">
+          <div class="err">กรุณากรอกนามสกุล</div>
+        </div>
+      </div>
+      <div class="field" id="f-email">
+        <label for="email">อีเมล</label>
+        <input type="email" id="email" placeholder="name@school.ac.th">
+        <div class="err">กรุณากรอกอีเมลให้ถูกต้อง</div>
+      </div>
+      <div class="field" id="f-school">
+        <label for="school">โรงเรียน / ระดับชั้น</label>
+        <input type="text" id="school" placeholder="เช่น โรงเรียนสาธิต ม.3">
+        <div class="err">กรุณากรอกโรงเรียนและระดับชั้น</div>
+      </div>
+      <div class="field" id="f-pass">
+        <label for="pass">รหัสผ่าน</label>
+        <input type="password" id="pass" placeholder="อย่างน้อย 6 ตัวอักษร">
+        <div class="err">รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร</div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">สร้างบัญชี</button>
+    </form>
+
+    <form class="form-card" id="loginForm" novalidate style="display:none;">
+      <div class="field" id="f-login-email">
+        <label for="loginEmail">อีเมล</label>
+        <input type="email" id="loginEmail" placeholder="name@school.ac.th">
+        <div class="err">ไม่พบอีเมลนี้ในระบบ ลองสมัครสมาชิกก่อน</div>
+      </div>
+      <div class="field" id="f-login-pass">
+        <label for="loginPass">รหัสผ่าน</label>
+        <input type="password" id="loginPass" placeholder="รหัสผ่านของคุณ">
+        <div class="err">รหัสผ่านไม่ถูกต้อง</div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">เข้าสู่ระบบ</button>
+    </form>
+  </section>
+
+  <!-- 3. PRODUCTS -->
+  <section id="products">
+    <div class="index-tab"><span class="dot"></span>ขั้นตอนที่ 03</div>
+    <h2 class="section-title">สินค้าทั้งหมด</h2>
+    <p class="sub">กรองตามหมวดหมู่ แล้วกด "หยิบใส่ตะกร้า" เพื่อไปต่อที่การสรุปคำสั่งซื้อ</p>
+    <div class="cat-row" id="prodCatRow"></div>
+    <div class="grid" id="productGrid"></div>
+  </section>
+
+  <!-- 4. ORDER SUMMARY -->
+  <section id="summary">
+    <div class="index-tab"><span class="dot"></span>ขั้นตอนที่ 04</div>
+    <h2 class="section-title">สรุปการสั่งซื้อ</h2>
+    <p class="sub">ตรวจสอบรายการสินค้าในตะกร้าก่อนไปยังขั้นตอนจัดส่ง</p>
+    <div class="receipt">
+      <h3>ใบสรุปรายการ</h3>
+      <div class="rmeta">Phon Shop · ORDER-<span id="orderNo">0001</span></div>
+      <div id="receiptLines"></div>
+      <div class="rtotals" id="receiptTotals"></div>
+    </div>
+    <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="btn btn-primary" data-goto="shipping">ไปขั้นตอนการจัดส่ง →</button>
+      <button class="btn btn-outline" data-goto="products">เลือกซื้อเพิ่ม</button>
+    </div>
+  </section>
+
+  <!-- 5. SHIPPING -->
+  <section id="shipping">
+    <div class="index-tab"><span class="dot"></span>ขั้นตอนที่ 05</div>
+    <h2 class="section-title">การจัดส่ง</h2>
+    <p class="sub">กรอกที่อยู่จัดส่งและเลือกรูปแบบการส่งที่ต้องการ</p>
+    <div class="ship-grid">
+      <div class="form-card" style="max-width:none;">
+        <div class="field">
+          <label for="addr">ที่อยู่จัดส่ง</label>
+          <input type="text" id="addr" placeholder="บ้านเลขที่ ถนน แขวง/ตำบล">
+        </div>
+        <div class="two-col">
+          <div class="field">
+            <label for="city">อำเภอ/เขต · จังหวัด</label>
+            <input type="text" id="city" placeholder="เช่น ปทุมวัน กรุงเทพฯ">
+          </div>
+          <div class="field">
+            <label for="zip">รหัสไปรษณีย์</label>
+            <input type="text" id="zip" placeholder="10330">
+          </div>
+        </div>
+        <div class="field">
+          <label for="phone">เบอร์ติดต่อ</label>
+          <input type="text" id="phone" placeholder="08X-XXX-XXXX">
+        </div>
+        <h3 style="font-size:15px;margin:22px 0 12px;">รูปแบบการจัดส่ง</h3>
+        <div class="ship-options" id="shipOptions"></div>
+      </div>
+      <div class="receipt">
+        <h3>ยอดชำระสุทธิ</h3>
+        <div class="rmeta">รวมค่าจัดส่งแล้ว</div>
+        <div id="shipTotals"></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;" id="confirmOrderBtn">ยืนยันคำสั่งซื้อ</button>
+        <div class="success-box" id="orderSuccess" style="margin-top:14px;">สั่งซื้อสำเร็จ ขอบคุณที่อุดหนุน Phon Shop ทางร้านจะจัดส่งสินค้าตามรูปแบบที่เลือกไว้</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Phon Shop — ทำขึ้นเพื่อสาธิตการออกแบบเว็บไซต์ขายของสำหรับนักเรียน</footer>
+
+<script>
+const categories = [
+  {id:'stationery', name:'เครื่องเขียน', icon:'✏️'},
+  {id:'books', name:'หนังสือ/ตำรา', icon:'📚'},
+  {id:'bags', name:'กระเป๋า/เครื่องแบบ', icon:'🎒'},
+  {id:'tech', name:'อุปกรณ์การเรียน', icon:'🖩'},
+];
+
+const products = [
+  {id:1, cat:'stationery', name:'ปากกาเจล 0.5 มม. (แพ็ค 5)', price:59, old:79, icon:'🖊️'},
+  {id:2, cat:'stationery', name:'สมุดจดกราฟ ปกแข็ง A5', price:45, icon:'📓'},
+  {id:3, cat:'stationery', name:'ชุดดินสอไม้ 2B (แพ็ค 12)', price:65, icon:'✏️'},
+  {id:4, cat:'stationery', name:'ยางลบ + กบเหลาดินสอ', price:29, icon:'🧽'},
+  {id:5, cat:'books', name:'หนังสือคณิตศาสตร์ ม.ปลาย', price:180, icon:'📘'},
+  {id:6, cat:'books', name:'แบบฝึกหัดภาษาอังกฤษ', price:150, old:190, icon:'📗'},
+  {id:7, cat:'books', name:'หนังสือวิทยาศาสตร์ ม.ต้น', price:165, icon:'📙'},
+  {id:8, cat:'bags', name:'กระเป๋าเป้นักเรียน กันน้ำ', price:590, old:690, icon:'🎒'},
+  {id:9, cat:'bags', name:'กระเป๋าดินสอผ้าแคนวาส', price:99, icon:'👝'},
+  {id:10, cat:'tech', name:'เครื่องคิดเลขวิทยาศาสตร์', price:450, icon:'🖩'},
+  {id:11, cat:'tech', name:'ไม้บรรทัด + ฉากสามเหลี่ยม', price:39, icon:'📐'},
+  {id:12, cat:'tech', name:'แฟลชไดรฟ์ 32GB', price:199, old:249, icon:'💾'},
+];
+
+const shipOptions = [
+  {id:'standard', name:'จัดส่งมาตรฐาน', desc:'3-5 วันทำการ', price:30},
+  {id:'express', name:'จัดส่งด่วน', desc:'1-2 วันทำการ', price:70},
+  {id:'pickup', name:'รับที่โรงเรียน (จุดนัดรับ)', desc:'นัดรับทุกวันศุกร์', price:0},
+];
+
+let cart = {};
+let selectedShip = 'standard';
+let users = [];
+let currentUser = null;
+const fmt = n => '฿' + n.toLocaleString('th-TH');
+
+function catName(id){ return categories.find(c=>c.id===id).name; }
+
+function renderCatRow(container, onClick){
+  container.innerHTML = '';
+  categories.forEach(c=>{
+    const chip = document.createElement('div');
+    chip.className = 'cat-chip';
+    chip.innerHTML = `<span class="ic">${c.icon}</span><span>${c.name}</span>`;
+    chip.onclick = () => onClick(c.id);
+    container.appendChild(chip);
+  });
+}
+
+function productCardHTML(p){
+  const bg = ['rgba(79,169,255,.12)','rgba(139,107,255,.12)','rgba(76,224,179,.12)','rgba(255,111,165,.12)'][p.id % 4];
+  return `
+    <div class="card">
+      <div class="glow"></div>
+      <div class="thumb" style="background:${bg};">${p.icon}</div>
+      <div class="cat-tag">${catName(p.cat)}</div>
+      <h4>${p.name}</h4>
+      <div><span class="price">${fmt(p.price)}</span>${p.old ? `<span class="old-price">${fmt(p.old)}</span>` : ''}</div>
+      <button data-add="${p.id}">หยิบใส่ตะกร้า</button>
+    </div>`;
+}
+
+function renderFeatured(){
+  const el = document.getElementById('featuredGrid');
+  const featured = products.filter(p=>p.old);
+  el.innerHTML = featured.map(productCardHTML).join('');
+  attachCardTilt();
+  animateCount(document.getElementById('statCount'), products.length);
+}
+
+function renderProducts(filter){
+  const el = document.getElementById('productGrid');
+  const list = filter ? products.filter(p=>p.cat===filter) : products;
+  el.innerHTML = list.map(productCardHTML).join('');
+  attachCardTilt();
+}
+
+function addToCart(id){
+  cart[id] = (cart[id]||0) + 1;
+  updateCartCount();
+  renderSummary();
+  const p = products.find(x=>x.id===id);
+  showToast(`เพิ่ม "${p.name}" ลงตะกร้าแล้ว`);
+}
+
+function updateCartCount(){
+  const total = Object.values(cart).reduce((a,b)=>a+b,0);
+  const el = document.getElementById('tabCartCount');
+  el.textContent = total ? `(${total})` : '';
+  el.classList.remove('bump');
+  void el.offsetWidth;
+  el.classList.add('bump');
+}
+
+function showToast(msg){
+  const host = document.getElementById('toastHost');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span class="dotpulse"></span>${msg}`;
+  host.appendChild(t);
+  setTimeout(()=> t.remove(), 2000);
+}
+
+function attachCardTilt(){
+  document.querySelectorAll('.card').forEach(card=>{
+    card.onmousemove = e=>{
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX-r.left)+'px');
+      card.style.setProperty('--my', (e.clientY-r.top)+'px');
+    };
+  });
+}
+
+function animateCount(el, target){
+  const suffix = ' รายการ';
+  let start = 0;
+  const dur = 700;
+  const t0 = performance.now();
+  function tick(t){
+    const p = Math.min(1, (t-t0)/dur);
+    el.textContent = Math.round(p*target) + suffix;
+    if(p<1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+const stepOrder = ['home','signup','products','summary','shipping'];
+function renderProgress(activeId){
+  const row = document.getElementById('progressRow');
+  const activeIdx = stepOrder.indexOf(activeId);
+  row.innerHTML = stepOrder.map((id,i)=>{
+    let cls = 'pdot';
+    if(i < activeIdx) cls += ' done';
+    if(i === activeIdx) cls += ' current';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+}
+
+function burstConfetti(){
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#4FA9FF','#8B6BFF','#FF6FA5','#4CE0B3'];
+  const pieces = Array.from({length:80}, ()=>({
+    x: canvas.width/2, y: canvas.height*0.3,
+    vx:(Math.random()-.5)*10, vy:Math.random()*-8-3,
+    size:4+Math.random()*4, color:colors[Math.floor(Math.random()*colors.length)],
+    rot:Math.random()*360, vr:(Math.random()-.5)*12
+  }));
+  let frame = 0;
+  function loop(){
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.vy += 0.35; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save();
+      ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+      ctx.restore();
+    });
+    if(frame < 90) requestAnimationFrame(loop);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  loop();
+}
+
+function cartLines(){
+  return Object.entries(cart).map(([id,qty])=>{
+    const p = products.find(x=>x.id==id);
+    return {p, qty, sum: p.price*qty};
+  });
+}
+
+function renderSummary(){
+  const lines = cartLines();
+  const linesEl = document.getElementById('receiptLines');
+  const totalsEl = document.getElementById('receiptTotals');
+  if(!lines.length){
+    linesEl.innerHTML = '<div class="empty-note">ยังไม่มีสินค้าในตะกร้า — ลองไปที่หน้าสินค้าเพื่อเลือกซื้อ</div>';
+    totalsEl.innerHTML = '';
+    document.getElementById('orderNo').textContent = '0000';
+    renderShipTotals(0);
+    return;
+  }
+  linesEl.innerHTML = lines.map(l => `
+    <div class="rline">
+      <div>
+        <div class="rname">${l.p.name}</div>
+        <div class="rqty">จำนวน ${l.qty} x ${fmt(l.p.price)}</div>
+      </div>
+      <div class="rprice">${fmt(l.sum)}</div>
+    </div>`).join('');
+  const subtotal = lines.reduce((a,l)=>a+l.sum,0);
+  totalsEl.innerHTML = `
+    <div class="rline"><span>ยอดรวมสินค้า</span><span class="rprice">${fmt(subtotal)}</span></div>
+    <div class="rline grand"><span>ยอดรวม</span><span class="rprice">${fmt(subtotal)}</span></div>`;
+  document.getElementById('orderNo').textContent = String(subtotal).padStart(4,'0');
+  renderShipTotals(subtotal);
+}
+
+function renderShipOptions(){
+  const el = document.getElementById('shipOptions');
+  el.innerHTML = shipOptions.map(o => `
+    <div class="ship-opt ${o.id===selectedShip?'selected':''}" data-ship="${o.id}">
+      <div>
+        <div class="oname">${o.name}</div>
+        <div class="odesc">${o.desc}</div>
+      </div>
+      <div class="oprice">${o.price ? fmt(o.price) : 'ฟรี'}</div>
+    </div>`).join('');
+}
+
+function renderShipTotals(subtotal){
+  const opt = shipOptions.find(o=>o.id===selectedShip);
+  const shipCost = subtotal >= 500 ? 0 : opt.price;
+  const grand = subtotal + shipCost;
+  const el = document.getElementById('shipTotals');
+  el.innerHTML = `
+    <div class="rline"><span>สินค้า</span><span class="rprice">${fmt(subtotal)}</span></div>
+    <div class="rline"><span>ค่าจัดส่ง (${opt.name})</span><span class="rprice">${subtotal>=500 ? 'ฟรี' : fmt(shipCost)}</span></div>
+    <div class="rtotals"><div class="rline grand"><span>ยอดชำระ</span><span class="rprice">${fmt(grand)}</span></div></div>`;
+}
+
+function showSection(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('active', s.id===id));
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active', b.dataset.target===id));
+  renderProgress(id);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('tabs').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-target]');
+  if(btn) showSection(btn.dataset.target);
+});
+document.addEventListener('click', e=>{
+  const g = e.target.closest('[data-goto]');
+  if(g) showSection(g.dataset.goto);
+});
+
+renderCatRow(document.getElementById('homeCatRow'), (catId)=>{
+  showSection('products');
+  renderProducts(catId);
+});
+renderFeatured();
+
+renderCatRow(document.getElementById('prodCatRow'), (catId)=>{
+  renderProducts(catId);
+});
+renderProducts();
+
+document.addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-add]');
+  if(btn) addToCart(Number(btn.dataset.add));
+});
+
+document.getElementById('signupForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  let valid = true;
+  const checks = [
+    ['f-fname','fname', v=>v.trim().length>0],
+    ['f-lname','lname', v=>v.trim().length>0],
+    ['f-email','email', v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)],
+    ['f-school','school', v=>v.trim().length>0],
+    ['f-pass','pass', v=>v.trim().length>=6],
+  ];
+  checks.forEach(([fieldId, inputId, test])=>{
+    const field = document.getElementById(fieldId);
+    const input = document.getElementById(inputId);
+    const ok = test(input.value);
+    field.classList.toggle('invalid', !ok);
+    if(!ok) valid = false;
+  });
+  const emailField = document.getElementById('f-email');
+  const emailInput = document.getElementById('email');
+  const emailErr = emailField.querySelector('.err');
+  const successEl = document.getElementById('signupSuccess');
+  const loginSuccessEl = document.getElementById('loginSuccess');
+  loginSuccessEl.style.display = 'none';
+
+  if(valid){
+    const emailLower = emailInput.value.trim().toLowerCase();
+    if(users.some(u => u.email === emailLower)){
+      emailErr.textContent = 'อีเมลนี้ถูกใช้สมัครแล้ว ลองเข้าสู่ระบบแทน';
+      emailField.classList.add('invalid');
+      successEl.style.display = 'none';
+      return;
+    }
+    emailErr.textContent = 'กรุณากรอกอีเมลให้ถูกต้อง';
+    const newUser = {
+      fname: document.getElementById('fname').value.trim(),
+      lname: document.getElementById('lname').value.trim(),
+      email: emailLower,
+      school: document.getElementById('school').value.trim(),
+      pass: document.getElementById('pass').value,
+    };
+    users.push(newUser);
+    currentUser = newUser;
+    renderAccountBox();
+    successEl.style.display = 'block';
+    document.getElementById('signupForm').reset();
+    showToast(`สร้างบัญชีสำเร็จ ยินดีต้อนรับคุณ ${newUser.fname}`);
+    setTimeout(()=>{ showSection('products'); }, 1200);
+  } else {
+    successEl.style.display = 'none';
+  }
+});
+
+document.getElementById('loginForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const emailField = document.getElementById('f-login-email');
+  const passField = document.getElementById('f-login-pass');
+  const emailInput = document.getElementById('loginEmail');
+  const passInput = document.getElementById('loginPass');
+  emailField.classList.remove('invalid');
+  passField.classList.remove('invalid');
+  document.getElementById('signupSuccess').style.display = 'none';
+
+  const emailLower = emailInput.value.trim().toLowerCase();
+  const user = users.find(u => u.email === emailLower);
+  if(!user){
+    emailField.classList.add('invalid');
+    return;
+  }
+  if(user.pass !== passInput.value){
+    passField.classList.add('invalid');
+    return;
+  }
+  currentUser = user;
+  renderAccountBox();
+  const loginSuccessEl = document.getElementById('loginSuccess');
+  loginSuccessEl.style.display = 'block';
+  document.getElementById('loginForm').reset();
+  showToast(`เข้าสู่ระบบสำเร็จ สวัสดีคุณ ${user.fname}`);
+  setTimeout(()=>{ showSection('products'); }, 1200);
+});
+
+document.getElementById('authSwitch').addEventListener('click', e=>{
+  const btn = e.target.closest('.auth-tab');
+  if(!btn) return;
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.toggle('active', t===btn));
+  const isLogin = btn.dataset.mode === 'login';
+  document.getElementById('signupForm').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('signupSuccess').style.display = 'none';
+  document.getElementById('loginSuccess').style.display = 'none';
+});
+
+function renderAccountBox(){
+  const box = document.getElementById('accountBox');
+  if(currentUser){
+    const initials = (currentUser.fname[0]||'') + (currentUser.lname[0]||'');
+    box.innerHTML = `
+      <div class="account-chip">
+        <div class="avatar">${initials.toUpperCase()}</div>
+        <span>${currentUser.fname}</span>
+        <button class="logout" id="logoutBtn">ออกจากระบบ</button>
+      </div>`;
+    document.getElementById('logoutBtn').onclick = ()=>{
+      currentUser = null;
+      renderAccountBox();
+      showToast('ออกจากระบบแล้ว');
+    };
+  } else {
+    box.innerHTML = `<button class="btn-account-login" data-goto="signup">เข้าสู่ระบบ</button>`;
+  }
+}
+renderAccountBox();
+
+renderShipOptions();
+document.getElementById('shipOptions').addEventListener('click', e=>{
+  const opt = e.target.closest('[data-ship]');
+  if(!opt) return;
+  selectedShip = opt.dataset.ship;
+  renderShipOptions();
+  const subtotal = cartLines().reduce((a,l)=>a+l.sum,0);
+  renderShipTotals(subtotal);
+});
+document.getElementById('confirmOrderBtn').addEventListener('click', ()=>{
+  if(!currentUser){
+    showToast('กรุณาเข้าสู่ระบบก่อนยืนยันคำสั่งซื้อ');
+    showSection('signup');
+    return;
+  }
+  if(!cartLines().length){
+    showToast('ยังไม่มีสินค้าในตะกร้า');
+    return;
+  }
+  document.getElementById('orderSuccess').style.display = 'block';
+  burstConfetti();
+});
+
+renderSummary();
+renderProgress('home');
+</script>
+</body>
+</html>
